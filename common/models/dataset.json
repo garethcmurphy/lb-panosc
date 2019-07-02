@@ -1,0 +1,45 @@
+{
+  "name": "Dataset",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "startDate": {
+      "type": "date",
+      "required": true
+    },
+    "location": {
+      "type": "string",
+      "required": true
+    },
+    "sampleName": {
+      "type": "string"
+    },
+    "chemicalFormula": {
+      "type": "string"
+    },
+    "technique": {
+      "type": "string"
+    },
+    "wavelength": {
+      "type": "number"
+    },
+    "path": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

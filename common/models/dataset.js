@@ -19,10 +19,30 @@ async function CERICrequest(queryObject) {
   return results;
 }
 
+async function ELIrequest(queryObject) {
+  const results = [];
+  return results;
+}
+
+async function ESRFrequest(queryObject) {
+  const results = [];
+  return results;
+}
+
+async function ILLrequest(queryObject) {
+  const results = [];
+  return results;
+}
+
+async function XFELrequest(queryObject) {
+  const results = [];
+  return results;
+}
+
 async function ESSrequest(queryObject) {
   var results;
   const essURI = "https://scicatapi.esss.dk/api/v3/Datasets/fullquery";
-  const fields = queryObject; 
+  const fields = queryObject;
   const limits = { limit: "3", order: "size ASC" };
   const finalURI = buildURI(essURI, fields, limits);
   var searchOptions = {
@@ -39,6 +59,33 @@ async function ESSrequest(queryObject) {
   return results;
 }
 
+function instituteSearch(instituteName, queryObject) {
+  let results = [];
+  switch (instituteName) {
+    case "CERIC":
+      results = CERICrequest(queryObject);
+      break;
+    case "ELI":
+      results = ELIrequest(queryObject);
+      break;
+    case "ESRF":
+      results = ESRFrequest(queryObject);
+      break;
+    case "ESS":
+      results = ESSrequest(queryObject);
+      break;
+    case "ILL":
+      results = ILLrequest(queryObject);
+      break;
+    case "XFEL":
+      results = XFELrequest(queryObject);
+      break;
+    default:
+      break;
+  }
+  return results;
+}
+
 module.exports = function(Dataset) {
   /**
    * Query PaNOSC institutes for scientific metadata
@@ -49,11 +96,12 @@ module.exports = function(Dataset) {
   Dataset.query = function(searchTerm, callback) {
     var queryResults;
 
+    const institutes = ["CERIC", "ELI", "ESRF", "ESS", "ILL", "XFEL"];
     // send request to six institutes
-    const cericResults = CERICrequest(searchTerm);
-    queryResults.concat(cericResults);
-    const essResults = ESSrequest(searchTerm);
-    queryResults.concat(essResults);
+    for (const inst in institutes) {
+      const instResults = instituteSearch(inst, searchTerm);
+      queryResults.concat(instResults);
+    }
 
     // aggregate results and return to user
 

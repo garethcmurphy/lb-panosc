@@ -15,27 +15,42 @@ function buildURI(essURI, fields, limits) {
 }
 
 async function CERICrequest(queryObject) {
-  const results = [];
+  let results = [];
+  if (typeof queryObject === Object) {
+    results = [];
+  }
   return results;
 }
 
 async function ELIrequest(queryObject) {
-  const results = [];
+  let results = [];
+  if (typeof queryObject === Object) {
+    results = [];
+  }
   return results;
 }
 
 async function ESRFrequest(queryObject) {
-  const results = [];
+  let results = [];
+  if (typeof queryObject === Object) {
+    results = [];
+  }
   return results;
 }
 
 async function ILLrequest(queryObject) {
-  const results = [];
+  let results = [];
+  if (typeof queryObject === Object) {
+    results = [];
+  }
   return results;
 }
 
 async function XFELrequest(queryObject) {
-  const results = [];
+  let results = [];
+  if (typeof queryObject === Object) {
+    results = [];
+  }
   return results;
 }
 

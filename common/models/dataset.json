@@ -12,30 +12,38 @@
     },
     "name": {
       "type": "string",
+      "description": "name of dataset",
       "required": true
     },
     "startDate": {
       "type": "date",
+      "description": "start datetime of run",
       "required": true
     },
     "location": {
       "type": "string",
+      "description": "name of beamline",
       "required": true
     },
     "sampleName": {
-      "type": "string"
+      "type": "string",
+      "description": "name of sample"
     },
     "chemicalFormula": {
-      "type": "string"
+      "type": "string",
+      "description": "chemical formula of sample"
     },
     "technique": {
-      "type": "string"
+      "type": "string",
+      "description": "scientific technique, e.g. macromolecular crystallography"
     },
     "wavelength": {
-      "type": "number"
+      "type": "number",
+      "description": "wavelength of photons or neutrons"
     },
     "path": {
-      "type": "string"
+      "type": "string",
+      "description": "path to location of files"
     }
   },
   "validations": [],

@@ -57,7 +57,7 @@ async function XFELrequest(queryObject) {
 async function ESSrequest(queryObject) {
   var results;
   const essURI = "https://scicatapi.esss.dk/api/v3/Datasets/anonymousquery";
-  const fields = queryObject;
+  const fields = { "text": queryObject };
   console.log("ess query", queryObject);
   const limits = { limit: "3", order: "size ASC" };
   const finalURI = buildURI(essURI, fields, limits);
@@ -65,17 +65,19 @@ async function ESSrequest(queryObject) {
     method: "GET",
     uri: finalURI
   };
+  let response;
   try {
-    const response = await requestPromise(searchOptions);
-    console.log(response);
+    response = await requestPromise(searchOptions);
+    // console.log(response);
   } catch (error) {
     console.log(error);
     return Promise.reject(error);
   }
-  return results;
+  //console.log(response);
+  return response;
 }
 
-function instituteSearch(instituteName, queryObject) {
+async function instituteSearch(instituteName, queryObject) {
   let results = [];
   switch (instituteName) {
     case "CERIC":
@@ -88,7 +90,7 @@ function instituteSearch(instituteName, queryObject) {
       results = ESRFrequest(queryObject);
       break;
     case "ESS":
-      results = ESSrequest(queryObject);
+      results = await ESSrequest(queryObject);
       break;
     case "ILL":
       results = ILLrequest(queryObject);
@@ -99,6 +101,7 @@ function instituteSearch(instituteName, queryObject) {
     default:
       break;
   }
+  // console.log(results);
   return results;
 }
 
@@ -109,21 +112,21 @@ module.exports = function(Dataset) {
    * @param {Function(Error, object)} callback
    */
 
-  Dataset.query = function(searchTerm, callback) {
+  Dataset.query = async function(searchTerm, callback) {
     var queryResults = [];
-    var searchTerm = { text: "nmx" };
+    // var searchTerm = { text: "nmx" };
     console.log("query", searchTerm);
 
     const institutes = ["CERIC", "ELI", "ESRF", "ESS", "ILL", "XFEL"];
     // send request to six institutes
-    institutes.forEach(inst => {
-      console.log("Searching ", inst);
-      const instResults = instituteSearch(inst, searchTerm);
-      // queryResults.concat(instResults);
-    });
+    let inst = "ESS";
+    const instResults = await instituteSearch(inst, searchTerm);
+    const esrfResults = await instituteSearch(inst, searchTerm);
+    queryResults = instResults;
+    // queryResults.concat
 
     // aggregate results and return to user
 
-    callback(null, queryResults);
+     callback(null, queryResults);
   };
 };

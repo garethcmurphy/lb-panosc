@@ -10,7 +10,7 @@ function buildURI(essURI, fields, limits) {
   const encodedFields = stringEncode(fields);
   const encodedLimits = stringEncode(limits);
   const finalURI =
-    essURI + "?fields" + encodedFields + "&limits=" + encodedLimits;
+    essURI + "?fields=" + encodedFields + "&limits=" + encodedLimits;
   return finalURI;
 }
 
@@ -56,11 +56,13 @@ async function XFELrequest(queryObject) {
 
 async function ESSrequest(queryObject) {
   var results;
+  console.log("equery ibject", queryObject);
   const essURI = "https://scicatapi.esss.dk/api/v3/Datasets/anonymousquery";
   const fields = { "text": queryObject };
   console.log("ess query", queryObject);
-  const limits = { limit: "3", order: "size ASC" };
+  const limits = { limit: "1" };
   const finalURI = buildURI(essURI, fields, limits);
+  console.log(finalURI);
   var searchOptions = {
     method: "GET",
     uri: finalURI
@@ -115,13 +117,16 @@ module.exports = function(Dataset) {
   Dataset.query = async function(searchTerm, callback) {
     var queryResults = [];
     // var searchTerm = { text: "nmx" };
+    if (searchTerm === undefined) {
+      console.log("searchTerm undefined");
+    }
     console.log("query", searchTerm);
 
     const institutes = ["CERIC", "ELI", "ESRF", "ESS", "ILL", "XFEL"];
     // send request to six institutes
     let inst = "ESS";
     const instResults = await instituteSearch(inst, searchTerm);
-    const esrfResults = await instituteSearch(inst, searchTerm);
+    //const esrfResults = instituteSearch(inst, searchTerm);
     queryResults = instResults;
     // queryResults.concat
 
@@ -129,4 +134,31 @@ module.exports = function(Dataset) {
 
      callback(null, queryResults);
   };
+
+  Dataset.remoteMethod("query", {
+      accepts: [
+        {
+          arg: "searchTerm",
+          type: "string",
+          required: false,
+          description: "Object containing one or more properties, e.g. wavelength, or text for full text search"
+        }
+      ],
+      returns: [
+        {
+          arg: "queryResults",
+          type: "object",
+          root: true,
+          description: "Array of objects from search results"
+        }
+      ],
+      description: "Query PaNOSC institutes for scientific metadata",
+      http: [
+        {
+          path: "/query",
+          verb: "get"
+        }
+      ]
+
+  });
 };

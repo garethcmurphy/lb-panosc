@@ -41,34 +41,5 @@
   "validations": [],
   "relations": {},
   "acls": [],
-  "methods": {
-    "query": {
-      "accepts": [
-        {
-          "arg": "searchTerm",
-          "type": "object",
-          "required": false,
-          "description": "Object containing one or more properties, e.g. wavelength, or text for full text search",
-          "http": {
-            "source": "form"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "queryResults",
-          "type": "object",
-          "root": true,
-          "description": "Array of objects from search results"
-        }
-      ],
-      "description": "Query PaNOSC institutes for scientific metadata",
-      "http": [
-        {
-          "path": "/query",
-          "verb": "get"
-        }
-      ]
-    }
-  }
+  "methods": {}
 }

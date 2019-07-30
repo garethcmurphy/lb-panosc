@@ -56,8 +56,9 @@ async function XFELrequest(queryObject) {
 
 async function ESSrequest(queryObject) {
   var results;
-  const essURI = "https://scicatapi.esss.dk/api/v3/Datasets/fullquery";
+  const essURI = "https://scicatapi.esss.dk/api/v3/Datasets/anonymousquery";
   const fields = queryObject;
+  console.log("ess query", queryObject);
   const limits = { limit: "3", order: "size ASC" };
   const finalURI = buildURI(essURI, fields, limits);
   var searchOptions = {
@@ -109,14 +110,17 @@ module.exports = function(Dataset) {
    */
 
   Dataset.query = function(searchTerm, callback) {
-    var queryResults;
+    var queryResults = [];
+    var searchTerm = { text: "nmx" };
+    console.log("query", searchTerm);
 
     const institutes = ["CERIC", "ELI", "ESRF", "ESS", "ILL", "XFEL"];
     // send request to six institutes
-    for (const inst in institutes) {
+    institutes.forEach(inst => {
+      console.log("Searching ", inst);
       const instResults = instituteSearch(inst, searchTerm);
-      queryResults.concat(instResults);
-    }
+      // queryResults.concat(instResults);
+    });
 
     // aggregate results and return to user
 

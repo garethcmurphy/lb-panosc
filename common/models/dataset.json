@@ -65,7 +65,7 @@
       "description": "Query PaNOSC institutes for scientific metadata",
       "http": [
         {
-          "path": "query",
+          "path": "/query",
           "verb": "get"
         }
       ]

@@ -54,7 +54,7 @@ async function XFELrequest(queryObject) {
   return results;
 }
 
-function helper_translate(object, newobject, key) {
+function copyProperty(object, newobject, key) {
   if (object.hasOwnProperty(key)) {
     newobject[key] = object[key];
   }
@@ -77,19 +77,19 @@ async function translate(array_input) {
     const scicatDset = array1[i];
     let panoscDset = {};
     renameProperty(scicatDset, panoscDset, "datasetName", "name");
-    helper_translate(scicatDset, panoscDset, "license");
-    helper_translate(scicatDset, panoscDset, "owner");
-    helper_translate(scicatDset, panoscDset, "orcidOfOwner");
-    helper_translate(scicatDset, panoscDset, "contactEmail");
-    helper_translate(scicatDset, panoscDset, "startDate");
+    copyProperty(scicatDset, panoscDset, "license");
+    copyProperty(scicatDset, panoscDset, "owner");
+    copyProperty(scicatDset, panoscDset, "orcidOfOwner");
+    copyProperty(scicatDset, panoscDset, "contactEmail");
+    copyProperty(scicatDset, panoscDset, "startDate");
     renameProperty(scicatDset, panoscDset, "endTime", "endDate");
-    helper_translate(scicatDset, panoscDset, "size");
+    copyProperty(scicatDset, panoscDset, "size");
     renameProperty(scicatDset, panoscDset, "creationLocation", "location");
     renameProperty(scicatDset, panoscDset, "sourceFolder", "path");
-    helper_translate(scicatDset, panoscDset, "technique");
-    helper_translate(scicatDset, panoscDset, "sampleName");
-    helper_translate(scicatDset, panoscDset, "chemicalFormula");
-    helper_translate(scicatDset, panoscDset, "wavelength");
+    copyProperty(scicatDset, panoscDset, "technique");
+    copyProperty(scicatDset, panoscDset, "sampleName");
+    copyProperty(scicatDset, panoscDset, "chemicalFormula");
+    copyProperty(scicatDset, panoscDset, "wavelength");
     array2.push(panoscDset);
   }
   return array2;
@@ -101,7 +101,7 @@ async function ESSrequest(queryObject) {
   const essURI = "https://scicatapi.esss.dk/api/v3/Datasets/anonymousquery";
   const fields = { text: queryObject };
   console.log("ess query", queryObject);
-  const limits = { limit: "1" };
+  const limits = { limit: "10" };
   const finalURI = buildURI(essURI, fields, limits);
   console.log(finalURI);
   var searchOptions = {
